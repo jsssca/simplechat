@@ -117,11 +117,11 @@ button {
 }
 
 .avatar {
-  padding: 5px;
+  padding: 0.5em;
   object-fit: cover;
   overflow: hidden;
-  object-position: 50%;
-  border-radius: 50%;
+  /* object-position: 50%;
+  border-radius: 50%; */
 }
 
 .avatar--small {
@@ -173,17 +173,31 @@ button {
 
 .form__input {
   background-color: var(--clr-light-grey);
-  border-radius: 2em;
 }
 
 .form__input--large {
   width: 80%;
+  padding: 0.5em;
   font-size: 1.2rem;
+  border-radius: 2em;
+}
+
+.form__input--small {
+  padding: 0.5em;
+  margin: 0.5em 0;
+  box-shadow: var(--light-shadow);
+  border-radius: var(--radius);
 }
 
 .time {
   color: var(--clr-purple);
   padding: 0.5rem;
+}
+
+.label {
+  color: var(--clr-purple);
+  font-size: 0.75rem;
+  margin: 0 auto;
 }
 
 .chat-list__nav,
@@ -279,7 +293,7 @@ Chat List
 
 /*
 ==============
-Chat List
+Chat
 ==============
 */
 
@@ -342,8 +356,42 @@ Chat List
   font-size: 1rem;
   font-weight: bold;
   border-radius: var(--radius);
+  color: var(--clr-black);
 }
 
 .btn__logout {
   color: var(--clr-purple);
+}
+
+/*
+==============
+Login
+==============
+*/
+
+.form__login {
+  height: 250px;
+  width: 400px;
+  padding: 50px;
+  background-color: var(--clr-lilac-grey);
+  box-shadow: var(--light-shadow);
+  flex-direction: column;
+  justify-content: center;
+  border-radius: var(--radius);
+}
+
+.btn__login {
+  border-radius: var(--radius);
+  padding: 0.5em;
+  margin: 1em auto;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--clr-black);
+
+  width: 25%;
+}
+
+.container--centre {
+  align-items: center;
+  justify-content: center;
 }
