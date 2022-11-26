@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: 8,
   },
+  avatar: {
+    type: String,
+    required: true,
+    min: 3,
+    max: 20,
+  },
 });
 
 module.exports = mongoose.model("Users", userSchema);
