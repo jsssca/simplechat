@@ -1,17 +1,25 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Chat from "./pages/Chat";
+import Chat from "./components/Chat/Chat";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Chat />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <header className="header">
+        <div className="info-box info-box--col">
+          <img
+            src="images/avatar-4.png"
+            alt="User Avatar"
+            className="avatar avatar--big"
+          />
+          <h1>Apple Dave</h1>
+        </div>
+        <span className="material-symbols-outlined btn btn__logout btn--colourful">
+          power_rounded
+        </span>
+      </header>
+      <Chat />
+    </>
   );
 }
+
+// TODO -- check is logged in? display chat: display login
