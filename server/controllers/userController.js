@@ -68,7 +68,7 @@ const register = async (req, res, next) => {
     next(err);
   }
   delete user.password;
-  return res.json({ status: true, user }); // send redirect to / ????
+  return res.json({ status: true, user });
 };
 
 const logout = async (req, res, next) => {};

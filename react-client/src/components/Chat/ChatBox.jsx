@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { useAppState } from "../../state";
 import Message from "./Message";
 
-//TODO -- will eventually use socketio
+const ChatBox = () => {
+  const [state, dispatch] = useAppState();
 
-const ChatBox = ({ pair }) => {
-  const [conversation, setConversation] = useState({});
+  const partner = state.partner; // current user's chat-partner
 
-  useEffect(() => {
-    // call api to get converstation between pair.username and pair.partner.username, then setConversation
-  });
+  const messages = state.messages; // messages between the current user and partner
 
   return (
     <section className="chat">
       <div className="chat__label">
         <img
-          src={pair.partner.avatar}
+          src={`/images/${partner.avatar}`}
           alt="avatar"
-          className="avatar avatar--small"
+          className="avatar avatar--med"
         />
-        <h3>{pair.partner.username}</h3>
+        <h3>{partner.username}</h3>
       </div>
       <div className="chat__box">
-        {conversation.map((msg) => {
+        {messages.map((msg) => {
           return (
             <Message
               key={msg.id}
-              userMessage={msg.username === pair.username}
-              content={msg.content}
+              origin={msg.from === partner.username ? "partner" : "user"}
+              content={msg.message}
               timestamp={msg.timestamp}
             />
           );

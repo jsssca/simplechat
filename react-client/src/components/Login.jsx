@@ -30,7 +30,7 @@ const Login = ({ onLogin }) => {
     event.preventDefault();
     const { username, password } = values;
     if (handleValidation()) {
-      console.log("OK"); // call api login, save user to global state, call onlogin(username, password)
+      console.log("OK"); // call onlogin(username, password)
     } else {
       console.log("NOTOK");
     }

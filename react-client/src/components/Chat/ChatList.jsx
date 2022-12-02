@@ -1,12 +1,25 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
+import { useAppState } from "../../state";
 import ChatListItem from "./ChatListItem";
+import { getChats } from "../../api";
 
-//TODO -- before mapping the chatList filter partner out
+const ChatList = () => {
+  const [chatList, setChatList] = useState([]);
 
-const ChatList = ({ pair, onChangePartner }) => {
-  const [newChat, setNewChat] = useState(false);
+  // fetches all of the current user's conversations
+  useEffect(() => {
+    getChats().then((x) => {
+      setChatList(x);
+    });
+  }, []);
 
-  const allChats = useMemo(() => {}, [newChat]); // use api to get all chats
+  const [state, dispatch] = useAppState();
+
+  const partner = state.partner.username; // current user's chat-partner
+
+  // removes the current chat between the current user and partner from the chat list (this chat is displayed adjacent to the ChatList component)
+  const chats = chatList.filter((chat) => chat.username !== partner);
 
   return (
     <section className="chat-list">
@@ -18,14 +31,14 @@ const ChatList = ({ pair, onChangePartner }) => {
       </div>
       <nav className="chat-list__nav">
         <ul>
-          {allChats.map((item) => {
+          {chats.map((item) => {
             return (
               <ChatListItem
                 key={item.username}
                 username={item.username}
+                avatar={item.avatar}
                 snippet={item.snippet}
                 timestamp={item.timestamp}
-                onChangePartner={onChangePartner}
               />
             );
           })}

@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoute = require("./routes/auth");
+const msgRoute = require("./routes/messages");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoute);
 //root with express-session middleware
+app.use("/api/messages", msgRoute);
 
 mongoose
   .connect(process.env.MONGO_URL, {

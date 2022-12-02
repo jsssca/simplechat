@@ -1,32 +1,15 @@
-import React, { useReducer } from "react";
+import React from "react";
 import ChatList from "./ChatList";
 import ChatBox from "./ChatBox";
+import { useAppState } from "../../state";
 
-const Chat = ({ username }) => {
-  const [pair, dispatch] = useReducer(
-    (pair, changePartner) => {
-      //call api
-      return {
-        ...pair,
-        partner: {
-          username: "",
-          avatar: "",
-        },
-      };
-    },
-    {
-      username: "",
-      partner: {
-        username: "",
-        avatar: "",
-      },
-    }
-  );
+const Chat = () => {
+  const [state, dispatch] = useAppState();
 
   return (
     <main className="container">
-      <ChatList partner={pair} onChangePartner={dispatch} />
-      <ChatBox partner={pair} />
+      <ChatList />
+      {state.partner.username ? <ChatBox /> : ""}
     </main>
   );
 };
