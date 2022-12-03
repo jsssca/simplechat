@@ -26,8 +26,15 @@ const login = async (req, res, next) => {
     return res.json({ msg: "Incorrect email or password", status: false });
   }
 
-  //TODO  generate express-session
-  return res.json({ status: true, user });
+  req.session.userId = user._id;
+
+  return res.json({
+    status: true,
+    user: {
+      username: user.username,
+      avatar: user.avatar,
+    },
+  });
 };
 
 const register = async (req, res, next) => {
@@ -71,6 +78,10 @@ const register = async (req, res, next) => {
   return res.json({ status: true, user });
 };
 
-const logout = async (req, res, next) => {};
+const logout = async (req, res, next) => {
+  req.session.destroy(() => {
+    res.json({ msg: "User has been logged out." });
+  });
+};
 
 module.exports = { login, register, logout };

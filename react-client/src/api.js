@@ -3,19 +3,19 @@ import axios from "axios";
 const BASE_URL = "http://localhost:5000";
 const url = (x) => `${BASE_URL}${x}`;
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
-// const login = (username, password) => {
-//   return axios
-//     .post(url("/api/auth/login"), {
-//       username,
-//       password,
-//     })
-//     .then((x) => x.data)
-//     .catch((e) => {
-//       throw new Error(e.response && e.response.data && e.response.data.message);
-//     });
-// };
+const login = (username, password) => {
+  return axios
+    .post(url("/api/auth/login"), {
+      username: username,
+      password: password,
+    })
+    .then((x) => x.data.user)
+    .catch((e) => {
+      throw new Error(e.response && e.response.data && e.response.data.message);
+    });
+};
 
 // const register = (username, email, password) => {
 //   return axios
@@ -29,15 +29,20 @@ const url = (x) => `${BASE_URL}${x}`;
 //       throw new Error(e.response && e.response.data && e.response.data.message);
 //     });
 
-const login = (username, password) => {
-  return {
-    username: "Lettuce",
-    avatar: "samoyed.png",
-  };
-};
+// const login = (username, password) => {
+//   return {
+//     username: "Lettuce",
+//     avatar: "samoyed.png",
+//   };
+// };
 
 const logout = () => {
-  console.log("LOGGED OUT");
+  return axios
+    .get(url("/api/auth/logout"))
+    .then((x) => x.data)
+    .catch((e) => {
+      throw new Error(e.response && e.response.data && e.response.data.message);
+    });
 };
 
 const addMessage = (username, msg) => {
@@ -61,6 +66,15 @@ const getChats = () => {
     });
 };
 
+const getUsers = () => {
+  return axios
+    .get(url("/api/messages/getusers"))
+    .then((x) => x.data)
+    .catch((e) => {
+      throw new Error(e.response && e.response.data && e.response.data.message);
+    });
+};
+
 const getMessages = (partner) => {
   return axios
     .post(url("/api/messages/getmsgs"), {
@@ -72,4 +86,4 @@ const getMessages = (partner) => {
     });
 };
 
-export { login, logout, getChats, getMessages, addMessage, BASE_URL };
+export { login, logout, getChats, getUsers, getMessages, addMessage, BASE_URL };

@@ -1,19 +1,36 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const sessions = require("express-session");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const authRoute = require("./routes/auth");
 const msgRoute = require("./routes/messages");
+const { verifySession } = require("./verifications/verifySession");
 const socket = require("socket.io");
+
+const oneDay = 1000 * 60 * 60 * 24;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: true })); // TODO -- Not safe!
+
+app.use(
+  sessions({
+    secret: process.env.SECRET,
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: true,
+  })
+);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
-//root with express-session middleware
-app.use("/api/messages", msgRoute);
+
+app.use("/api/messages", verifySession, msgRoute);
 
 mongoose
   .connect(process.env.MONGO_URL, {

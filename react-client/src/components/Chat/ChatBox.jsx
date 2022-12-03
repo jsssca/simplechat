@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAppState } from "../../state";
 import Message from "./Message";
 import { addMessage } from "../../api";
@@ -12,28 +12,73 @@ const ChatBox = ({ socket }) => {
 
   const [msg, setMsg] = useState("");
 
+  const [msgArrival, setMsgArrival] = useState(null);
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleAddMessage = (message) => {
+    dispatch({
+      type: "ADD_MESSAGE",
+      payload: {
+        id: message.id,
+        from: message.from, // TODO -- this is an object id not a username
+        timestamp: message.timestamp,
+        message: message.message,
+      },
+    });
+  };
+
+  const handleUpdateChats = (message) => {
+    dispatch({
+      type: "UPDATE_CHATS",
+      payload: {
+        user: {
+          username: partner.username,
+          avatar: partner.avatar,
+        },
+        snippet: message.message,
+        timestamp: message.timestamp,
+      },
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
       addMessage(partner.username, msg).then((m) => {
-        socket.current.emit("send-msg", {
-          to: partner.username,
-          messages: msg,
-        });
+        socket.current.emit("send-msg", m);
 
-        dispatch({
-          type: "ADD_MESSAGE",
-          payload: {
-            id: m._id,
-            from: m.from, // TODO -- this is an object id not a username
-            timestamp: m.updatedAt,
-            message: m.message.text,
-          },
-        });
+        handleAddMessage(m); // update the state with the new message
+
+        handleUpdateChats(m); // update chats with the new message
 
         setMsg("");
       });
     }
+  };
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (m) => {
+        setMsgArrival(m);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (msgArrival) {
+      handleAddMessage(msgArrival); // update the state with the new message
+
+      handleUpdateChats(msgArrival); // update chats with the new message
+    }
+  }, [msgArrival]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -57,6 +102,7 @@ const ChatBox = ({ socket }) => {
             />
           );
         })}
+        <div ref={messagesEndRef} />
       </div>
       <div>
         <form onSubmit={handleSubmit} className="form form__send">
