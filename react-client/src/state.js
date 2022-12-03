@@ -25,10 +25,18 @@ import { createContext, useContext, useReducer } from "react";
  */
 const reducer = (state, action) => {
   switch (action.type) {
-    case "SET_PARTNER": {
+    case "SET_CHAT": {
       return {
         partner: action.payload.partner,
         messages: action.payload.messages,
+      };
+    }
+    case "ADD_MESSAGE": {
+      const msgs = [...state.messages];
+      msgs.push(action.payload);
+      return {
+        ...state,
+        messages: msgs,
       };
     }
     default:

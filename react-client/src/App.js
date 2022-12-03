@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Chat from "./components/Chat/Chat";
 import useAppStateContext, { AppContext } from "./state";
-import { login } from "./api";
+import { login, BASE_URL } from "./api";
+import { io } from "socket.io-client";
 
 const DEMO_USER = {
   username: "Lettuce",
@@ -9,6 +10,8 @@ const DEMO_USER = {
 };
 
 export default function App() {
+  const socket = useRef();
+
   const [user, setUser] = useState({
     username: "",
     avatar: "",
@@ -18,6 +21,13 @@ export default function App() {
     const u = login(DEMO_USER.username, DEMO_USER.password);
     setUser(u);
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      socket.current = io(BASE_URL);
+      socket.current.emit("add-user", user.username);
+    }
+  }, [user]);
 
   const [state, dispatch] = useAppStateContext();
 
@@ -36,7 +46,7 @@ export default function App() {
           power_rounded
         </span>
       </header>
-      <Chat />
+      <Chat socket={socket} />
     </AppContext.Provider>
   );
 }

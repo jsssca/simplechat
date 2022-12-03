@@ -1,13 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAppState } from "../../state";
 import Message from "./Message";
+import { addMessage } from "../../api";
 
-const ChatBox = () => {
+const ChatBox = ({ socket }) => {
   const [state, dispatch] = useAppState();
 
   const partner = state.partner; // current user's chat-partner
 
   const messages = state.messages; // messages between the current user and partner
+
+  const [msg, setMsg] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (msg.length > 0) {
+      addMessage(partner.username, msg).then((m) => {
+        socket.current.emit("send-msg", {
+          to: partner.username,
+          messages: msg,
+        });
+
+        dispatch({
+          type: "ADD_MESSAGE",
+          payload: {
+            id: m._id,
+            from: m.from, // TODO -- this is an object id not a username
+            timestamp: m.updatedAt,
+            message: m.message.text,
+          },
+        });
+
+        setMsg("");
+      });
+    }
+  };
 
   return (
     <section className="chat">
@@ -32,11 +59,14 @@ const ChatBox = () => {
         })}
       </div>
       <div>
-        <form className="form form__send">
+        <form onSubmit={handleSubmit} className="form form__send">
           <input
             type="text"
             name="message"
             className="form__input form__input--large"
+            placeholder={`Send ${partner.username} a message...`}
+            onChange={(e) => setMsg(e.target.value)}
+            value={msg}
           />
           <button type="submit" className="btn btn__send btn--colourful">
             Send

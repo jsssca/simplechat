@@ -40,9 +40,21 @@ const logout = () => {
   console.log("LOGGED OUT");
 };
 
+const addMessage = (username, msg) => {
+  return axios
+    .post(url("/api/messages/addmsg"), {
+      to: username,
+      message: msg,
+    })
+    .then((x) => x.data)
+    .catch((e) => {
+      throw new Error(e.response && e.response.data && e.response.data.message);
+    });
+};
+
 const getChats = () => {
   return axios
-    .post(url("/api/messages/getchats"), {})
+    .get(url("/api/messages/getchats"))
     .then((x) => x.data)
     .catch((e) => {
       throw new Error(e.response && e.response.data && e.response.data.message);
@@ -60,4 +72,4 @@ const getMessages = (partner) => {
     });
 };
 
-export { login, logout, getChats, getMessages };
+export { login, logout, getChats, getMessages, addMessage, BASE_URL };

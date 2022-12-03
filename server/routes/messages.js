@@ -7,6 +7,6 @@ const router = require("express").Router();
 
 router.post("/addmsg", addMessage);
 router.post("/getmsgs", getMessages);
-router.post("/getchats", getChats);
+router.get("/getchats", getChats);
 
 module.exports = router;

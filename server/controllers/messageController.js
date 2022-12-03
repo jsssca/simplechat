@@ -43,7 +43,7 @@ const addMessage = async (req, res, next) => {
   try {
     const sender = await Users.findOne({ username: "Lettuce" }); // TODO -- get from session!!
     const recipient = await Users.findOne({ username: to }); // TODO -- make sure user exists!!
-    const m = await Messages.create({
+    const msg = await Messages.create({
       message: {
         text: message,
       },
@@ -51,8 +51,8 @@ const addMessage = async (req, res, next) => {
       from: sender,
     });
 
-    if (m) {
-      return res.json({ msg: "Message sent!" });
+    if (msg) {
+      return res.json(msg);
     }
   } catch (err) {
     next(err);
@@ -166,8 +166,6 @@ const getChats = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-
-  // for each user find all messages in order and limit 1
 };
 
 module.exports = { getMessages, addMessage, getChats };

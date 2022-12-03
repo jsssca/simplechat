@@ -2,22 +2,11 @@
 // generate random avatar string
 // called when registering
 
+// gettimelabel
+
 // Component: Add Chat
 // display model
 // select user to chat with
-
-// Component: ChatList
-// Users Chats
-// *chat snippet is generated server side
-
-// Component: ChatBox
-//
-
-// Component Message
-
-// Component Header
-
-// Component Main
 
 //TODO
 // Responsive Design

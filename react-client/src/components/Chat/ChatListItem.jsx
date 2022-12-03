@@ -9,7 +9,7 @@ const ChatListItem = ({ username, avatar, snippet, timestamp }) => {
   const handleClick = () => {
     getMessages(username).then((x) => {
       dispatch({
-        type: "SET_PARTNER",
+        type: "SET_CHAT",
         payload: {
           partner: {
             username: username,

@@ -3,13 +3,13 @@ import ChatList from "./ChatList";
 import ChatBox from "./ChatBox";
 import { useAppState } from "../../state";
 
-const Chat = () => {
+const Chat = ({ socket }) => {
   const [state, dispatch] = useAppState();
 
   return (
     <main className="container">
       <ChatList />
-      {state.partner.username ? <ChatBox /> : ""}
+      {state.partner.username ? <ChatBox socket={socket} /> : ""}
     </main>
   );
 };
