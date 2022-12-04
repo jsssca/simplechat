@@ -30,9 +30,11 @@ const login = async (req, res, next) => {
 
   return res.json({
     status: true,
-    user: {
-      username: user.username,
-      avatar: user.avatar,
+    token: {
+      user: {
+        username: user.username,
+        avatar: user.avatar,
+      },
     },
   });
 };

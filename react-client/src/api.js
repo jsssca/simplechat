@@ -11,7 +11,7 @@ const login = (username, password) => {
       username: username,
       password: password,
     })
-    .then((x) => x.data.user)
+    .then((x) => x.data)
     .catch((e) => {
       throw new Error(e.response && e.response.data && e.response.data.message);
     });
@@ -28,13 +28,6 @@ const login = (username, password) => {
 //     .catch((e) => {
 //       throw new Error(e.response && e.response.data && e.response.data.message);
 //     });
-
-// const login = (username, password) => {
-//   return {
-//     username: "Lettuce",
-//     avatar: "samoyed.png",
-//   };
-// };
 
 const logout = () => {
   return axios

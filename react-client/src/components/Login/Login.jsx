@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { login } from "../../api";
 
-const Login = ({ onLogin }) => {
+export default function Login({ setToken }) {
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -19,7 +20,7 @@ const Login = ({ onLogin }) => {
     if (username === "") {
       toast.error("Please enter your username.");
       return false;
-    } else if (password == "") {
+    } else if (password === "") {
       toast.error("Please enter your password.");
       return false;
     }
@@ -30,16 +31,18 @@ const Login = ({ onLogin }) => {
     event.preventDefault();
     const { username, password } = values;
     if (handleValidation()) {
-      console.log("OK"); // call onlogin(username, password)
-    } else {
-      console.log("NOTOK");
+      login(username, password).then((x) => setToken({ token: x.token }));
     }
   };
 
   return (
-    <>
-      <form onSubmit={(event) => handleSubmit(event)}>
+    <main className="container container--centre">
+      <form
+        className="form form__login"
+        onSubmit={(event) => handleSubmit(event)}
+      >
         <input
+          className="form__input form__input--small"
           type="text"
           placeholder="Username"
           name="username"
@@ -47,20 +50,23 @@ const Login = ({ onLogin }) => {
           value={values.username}
         />
         <input
+          className="form__input form__input--small"
           type="password"
           placeholder="Password"
-          name="Password"
+          name="password"
           onChange={(e) => handleChange(e)}
           value={values.password}
         />
-        <button type="submit">Login</button>
-        <span>
-          Don't have an account? <Link to="/register">Register Here</Link>
-        </span>
+        <button className="btn btn__login btn--colourful" type="submit">
+          Login
+        </button>
+        <span className="label">Don't have an account? Register Here</span>
       </form>
       <ToastContainer />
-    </>
+    </main>
   );
-};
+}
 
-export default Login;
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+};
