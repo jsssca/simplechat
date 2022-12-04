@@ -8,7 +8,7 @@ After a user has logged in, Simple Chat displays a list of the user's active con
 
 The user chat click the "Add Chat" button and select a new user to chat with:
 
-![SimpleChat Users](./images/simplechat_screenshot12.png)
+![SimpleChat Users](./images/simplechat_screenshot2.png)
 
 ## Technologies
 
