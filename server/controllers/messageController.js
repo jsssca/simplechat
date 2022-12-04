@@ -24,7 +24,7 @@ const getMessages = async (req, res, next) => {
       ],
     })
       .sort({ updatedAt: 1 })
-      .populate({ path: "from", model: User });
+      .populate({ path: "from", model: User }); // TODO -- limit
 
     const msgs = messages.map((msg) => {
       return {
@@ -162,7 +162,7 @@ const getChats = async (req, res, next) => {
           },
         },
       },
-    ]);
+    ]); // TODO -- limit
 
     await Users.populate(allChats, { path: "from" });
 

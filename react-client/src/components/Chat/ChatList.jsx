@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAppState } from "../../state";
 import ChatListItem from "./ChatListItem";
 import { getChats, getUsers } from "../../api";
+import { getChatTime } from "../../utils";
 
 const ChatList = ({ username }) => {
   const [state, dispatch] = useAppState();
@@ -68,7 +69,7 @@ const ChatList = ({ username }) => {
                     username={item.user.username}
                     avatar={item.user.avatar}
                     snippet={item.snippet}
-                    timestamp={item.timestamp}
+                    timestamp={getChatTime(item.timestamp)}
                   />
                 );
               })}

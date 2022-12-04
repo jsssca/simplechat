@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAppState } from "../../state";
 import Message from "./Message";
 import { addMessage } from "../../api";
+import { getChatTime } from "../../utils";
 
 const ChatBox = ({ socket }) => {
   const [state, dispatch] = useAppState();
@@ -98,7 +99,7 @@ const ChatBox = ({ socket }) => {
               key={msg.id}
               origin={msg.from === partner.username ? "partner" : "user"}
               content={msg.message}
-              timestamp={msg.timestamp}
+              timestamp={getChatTime(msg.timestamp)}
             />
           );
         })}

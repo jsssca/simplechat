@@ -1,21 +1,3 @@
-//selectAvatar
-// generate random avatar string
-// called when registering
-
-// gettimelabel
-
-// Component: Add Chat
-// display model
-// select user to chat with
-
-//TODO
-// Responsive Design
-// Show online users
-// Group Chats
-// Allow user to select an avatar
-
-//to snippet
-
 const toSnippet = (text) => {
   if (text.length > 120) {
     text = text.slice(0, 120).concat("...");
@@ -23,7 +5,21 @@ const toSnippet = (text) => {
   return text;
 };
 
-//chatListTime
-// chatBoxTime
+const getChatTime = (timestamp) => {
+  const ts = new Date(timestamp);
+  const tsDateString = ts.toDateString();
+  const todayDateString = new Date().toDateString();
 
-export { toSnippet };
+  if (new Date(todayDateString) > new Date(tsDateString)) {
+    return tsDateString;
+  }
+  return ts
+    .toTimeString()
+    .split(" ")[0]
+    .toString()
+    .split(":")
+    .slice(0, 2)
+    .join(":");
+};
+
+export { toSnippet, getChatTime };

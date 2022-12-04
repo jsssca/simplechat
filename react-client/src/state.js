@@ -43,12 +43,16 @@ const reducer = (state, action) => {
     case "ADD_CHATS": {
       return {
         ...state,
-        chats: action.payload.map((c) => {
-          return {
-            ...c,
-            snippet: toSnippet(c.snippet),
-          };
-        }),
+        chats: action.payload
+          .map((c) => {
+            return {
+              ...c,
+              snippet: toSnippet(c.snippet),
+            };
+          })
+          .sort((a, b) => {
+            return new Date(b.timestamp) > new Date(a.timestamp);
+          }),
       };
     }
     case "ADD_MESSAGE": {
@@ -69,7 +73,7 @@ const reducer = (state, action) => {
         chats = chats.filter((x) => x !== chat);
       }
 
-      chats.push({
+      chats.unshift({
         user: action.payload.user,
         snippet: toSnippet(action.payload.snippet),
         timestamp: action.payload.timestamp,
