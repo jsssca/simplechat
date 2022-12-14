@@ -4,13 +4,13 @@ This project is realtime chat application using React, Node.js, Socket.io and Mo
 
 ## Features
 
-Users log into an account and exchange messages with other users.
+Simple Chat's users log into an account and exchange messages with other users.
 
 After a user has logged in, Simple Chat displays a list of the user's active conversations alongside an active chat:
 
 ![SimpleChat Chats](./images/ss_chats.png)
 
-The user chat click the "Add Chat" button and select a new user to chat with:
+The user can click the "Add Chat" button and select a new user to chat with:
 
 ![SimpleChat Users](./images/ss_users.png)
 
