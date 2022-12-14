@@ -2,15 +2,17 @@ const Messages = require("../model/Message");
 const User = require("../model/User");
 const Users = require("../model/User");
 
+// Get all of the messages between the current user and another user
 const getMessages = async (req, res, next) => {
-  const { partner } = req.body;
+  const { partner } = req.body; // other user
   try {
-    const userOne = await Users.findById(req.session.userId);
-    const userTwo = await Users.findOne({ username: partner }); // Check the user exists
+    const userOne = await Users.findById(req.session.userId); // get current user id from session -- TODO -- export this to a function
+    const userTwo = await Users.findOne({ username: partner }); // Check the other user exists
     if (!userTwo) {
       return res.json({ msg: "This user does not exist!", status: false });
     }
 
+    // 1. find all messages between userOne and userTwo
     const messages = await Messages.find({
       $or: [
         {
@@ -26,6 +28,7 @@ const getMessages = async (req, res, next) => {
       .sort({ updatedAt: 1 })
       .populate({ path: "from", model: User }); // TODO -- limit
 
+    // 2. create a list
     const msgs = messages.map((msg) => {
       return {
         id: msg._id,
@@ -35,21 +38,24 @@ const getMessages = async (req, res, next) => {
       };
     });
 
+    // 3. return the list
     return res.json(msgs);
   } catch (err) {
     next(err);
   }
 };
 
+// Add a message from the current user to another user
 const addMessage = async (req, res, next) => {
-  const { to, message } = req.body;
+  const { to, message } = req.body; // other user and message to add
   try {
-    const sender = await Users.findById(req.session.userId);
-    const recipient = await Users.findOne({ username: to }); // Check the user exists
+    const sender = await Users.findById(req.session.userId); // get current user id from session
+    const recipient = await Users.findOne({ username: to }); // Check the other user exists
     if (!recipient) {
       return res.json({ msg: "This user does not exist!", status: false });
     }
 
+    // 1. create and add a message
     const msg = await Messages.create({
       message: {
         text: message,
@@ -58,6 +64,7 @@ const addMessage = async (req, res, next) => {
       from: sender,
     });
 
+    // 2. return the new message info
     if (msg) {
       return res.json({
         id: msg._id,
@@ -74,6 +81,7 @@ const addMessage = async (req, res, next) => {
   return res.json({ msg: "Message could not be added to the database." });
 };
 
+// Get aLL available users
 const getUsers = async (req, res, next) => {
   try {
     const users = await Users.find();
@@ -86,10 +94,12 @@ const getUsers = async (req, res, next) => {
   }
 };
 
+// Get all chats between the current user and other users
 const getChats = async (req, res, next) => {
   try {
-    const currentUser = await Users.findById(req.session.userId);
+    const currentUser = await Users.findById(req.session.userId); // get current user id from session
 
+    // 1. find all of the most recent messages between the current user and other users
     const allChats = await Messages.aggregate([
       {
         $match: {
@@ -168,6 +178,7 @@ const getChats = async (req, res, next) => {
 
     await Users.populate(allChats, { path: "to" });
 
+    // 2. create and return a list of chats
     const chats = allChats.map((chat) => {
       const username =
         chat.from.username === currentUser.username

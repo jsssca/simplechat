@@ -1,5 +1,5 @@
 const User = require("../model/User");
-
+// middleware to check if there is and active session
 const verifySession = async (req, res, next) => {
   const userId = req.session.userId;
   if (!userId) {
