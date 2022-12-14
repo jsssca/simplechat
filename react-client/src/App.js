@@ -7,10 +7,12 @@ import { useToken } from "./hooks";
 function App() {
   const { token, setToken, clearToken } = useToken();
 
+  // show Login if a user token has not been saved
   if (!token) {
     return <Login setToken={setToken} />;
   }
 
+  // show user dashboard when user has successfully logged in and their token has been saved
   return <Dashboard user={token.user} onLogout={clearToken} />;
 }
 

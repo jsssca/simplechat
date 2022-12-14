@@ -14,18 +14,20 @@ const ChatList = ({ username }) => {
     });
   }, []);
 
-  const chatList = state.chats;
+  const chatList = state.chats; // all user's chats
 
   const partner = state.partner.username; // current user's chat-partner
 
   // removes the current chat between the current user and partner from the chat list (this is displayed adjacent to the ChatList component)
   const chats = chatList.filter((chat) => chat.user.username !== partner);
 
-  // show all user or all current user's chats
+  // show all available users OR show all current user's chats
   const [isShown, setIsShown] = useState(false);
 
+  // all available users to chat with
   const [allUsers, setAllUsers] = useState([]);
 
+  // fetch all available users to chat with
   useEffect(() => {
     getUsers().then((x) => {
       setAllUsers(x);
@@ -37,7 +39,7 @@ const ChatList = ({ username }) => {
     setIsShown((current) => !current);
   };
 
-  const users = allUsers.filter((u) => u.username !== username);
+  const users = allUsers.filter((u) => u.username !== username); // remove the current user's name
 
   return (
     <section className="chat-list">

@@ -34,6 +34,7 @@ import { toSnippet } from "./utils";
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_CHAT": {
+      // update state with messages between user and selected chat-partner
       return {
         ...state,
         partner: action.payload.partner,
@@ -41,6 +42,7 @@ const reducer = (state, action) => {
       };
     }
     case "ADD_CHATS": {
+      // update state with all the user's recenct chats
       return {
         ...state,
         chats: action.payload
@@ -56,6 +58,7 @@ const reducer = (state, action) => {
       };
     }
     case "ADD_MESSAGE": {
+      // update the state of the current chat with a new message
       const msgs = [...state.messages];
       msgs.push(action.payload);
       return {
@@ -64,15 +67,19 @@ const reducer = (state, action) => {
       };
     }
     case "UPDATE_CHATS": {
+      //
       let chats = [...state.chats];
+      // 1. check if chat to be updated already exists
       const chat = chats.find(
         (x) => x.user.username === action.payload.user.username
       );
 
+      //2. if it does, remove it
       if (chat) {
         chats = chats.filter((x) => x !== chat);
       }
 
+      // 3. put the updated chat at the beginning of chats
       chats.unshift({
         user: action.payload.user,
         snippet: toSnippet(action.payload.snippet),
@@ -85,6 +92,7 @@ const reducer = (state, action) => {
       };
     }
     case "CLEAR": {
+      // reset to an empty state
       return initialState;
     }
     default:

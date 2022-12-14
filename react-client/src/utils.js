@@ -5,6 +5,7 @@ const toSnippet = (text) => {
   return text;
 };
 
+// TODO -- Use internationalisation
 const getChatTime = (timestamp) => {
   const ts = new Date(timestamp);
   const tsDateString = ts.toDateString();

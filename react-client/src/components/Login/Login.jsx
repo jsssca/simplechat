@@ -31,7 +31,7 @@ export default function Login({ setToken }) {
     event.preventDefault();
     const { username, password } = values;
     if (handleValidation()) {
-      login(username, password).then((x) => setToken({ token: x.token }));
+      login(username, password).then((x) => setToken({ token: x.token })); // login by setting the user's token
     }
   };
 

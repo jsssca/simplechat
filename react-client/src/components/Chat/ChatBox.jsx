@@ -13,7 +13,7 @@ const ChatBox = ({ socket }) => {
 
   const [msg, setMsg] = useState("");
 
-  const [msgArrival, setMsgArrival] = useState(null);
+  const [msgArrival, setMsgArrival] = useState(null); // updated upon socket message received
 
   const messagesEndRef = useRef(null);
 
@@ -62,6 +62,7 @@ const ChatBox = ({ socket }) => {
     }
   };
 
+  // receive new messages from socket
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-recieve", (m) => {
@@ -78,6 +79,7 @@ const ChatBox = ({ socket }) => {
     }
   }, [msgArrival]);
 
+  // scrolls to the last message
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
